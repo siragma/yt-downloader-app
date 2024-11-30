@@ -64,20 +64,30 @@ def download_video():
             'no_warnings': False,
             'merge_output_format': 'mp4',
             'progress_hooks': [lambda d: progress_hook({**d, 'download_id': temp_id})],
-            'age_limit': 0,
+            'age_limit': None,
             'no_check_certificate': True,
             'extractor_args': {
                 'youtube': {
-                    'player_client': ['web_embedded'],
-                    'player_skip': ['configs'],
+                    'player_client': ['tv_embedded', 'web_embedded', 'mweb'],
+                    'player_skip': [],
+                    'max_comments': 0,
                 }
             },
             'add_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-us,en;q=0.5',
-                'Sec-Fetch-Mode': 'navigate',
-            }
+                'User-Agent': 'Mozilla/5.0 (SMART-TV; Linux; Tizen 2.4.0) AppleWebkit/538.1 (KHTML, like Gecko) SamsungBrowser/1.1 TV Safari/538.1',
+                'Accept': '*/*',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Origin': 'https://www.youtube.com',
+                'Referer': 'https://www.youtube.com/',
+            },
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (SMART-TV; Linux; Tizen 2.4.0) AppleWebkit/538.1 (KHTML, like Gecko) SamsungBrowser/1.1 TV Safari/538.1',
+            },
+            'socket_timeout': 30,
+            'nocheckcertificate': True,
+            'prefer_insecure': True,
+            'no_warnings': True,
+            'noplaylist': True,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
