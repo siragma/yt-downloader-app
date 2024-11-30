@@ -7,7 +7,7 @@ import uuid
 app = Flask(__name__)
 
 # 다운로드 폴더 설정
-DOWNLOAD_FOLDER = str(Path.home() / "Downloads" / "youtube_downloads")
+DOWNLOAD_FOLDER = "/app/downloads"
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
 @app.route('/')
@@ -101,4 +101,4 @@ def serve_file(download_id, filename):
     return send_file(file_path, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
