@@ -63,7 +63,21 @@ def download_video():
             'quiet': False,
             'no_warnings': False,
             'merge_output_format': 'mp4',
-            'progress_hooks': [lambda d: progress_hook({**d, 'download_id': temp_id})]
+            'progress_hooks': [lambda d: progress_hook({**d, 'download_id': temp_id})],
+            'age_limit': 0,
+            'no_check_certificate': True,
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['web_embedded'],
+                    'player_skip': ['configs'],
+                }
+            },
+            'add_headers': {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-us,en;q=0.5',
+                'Sec-Fetch-Mode': 'navigate',
+            }
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -77,9 +91,12 @@ def download_video():
             'download_id': temp_id
         })
     except Exception as e:
-        print(f"Error in download_video: {str(e)}")
-        download_status[temp_id] = {'status': 'error', 'error': str(e)}
-        return jsonify({'error': f"다운로드 중 오류 발생: {str(e)}"}), 500
+        error_msg = str(e)
+        if "Sign in to confirm your age" in error_msg:
+            error_msg = "연령 제한이 있는 동영상입니다. 현재는 다운로드할 수 없습니다."
+        print(f"Error in download_video: {error_msg}")
+        download_status[temp_id] = {'status': 'error', 'error': error_msg}
+        return jsonify({'error': f"다운로드 중 오류 발생: {error_msg}"}), 500
 
 @app.route('/download-status/<download_id>')
 def get_download_status(download_id):
