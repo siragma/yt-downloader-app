@@ -38,7 +38,6 @@ def download_video():
         'outtmpl': os.path.join(DOWNLOAD_FOLDER, f'{temp_id}/%(title)s.%(ext)s'),
         'quiet': True,
         'no_warnings': True,
-        'cookiesfrombrowser': ('chrome',),
         'merge_output_format': 'mp4'
     }
     
@@ -77,7 +76,6 @@ def download_audio():
         }],
         'quiet': True,
         'no_warnings': True,
-        'cookiesfrombrowser': ('chrome',)
     }
     
     try:
