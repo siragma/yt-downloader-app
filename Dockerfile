@@ -16,6 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 애플리케이션 코드 복사
 COPY . .
 
+# 다운로드 디렉토리 생성
+RUN mkdir -p /app/downloads
+
 # 포트 5000 노출
 EXPOSE 5000
 
